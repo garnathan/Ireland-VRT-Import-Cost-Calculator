@@ -1,0 +1,443 @@
+{% extends "base.html" %}
+
+{% block title %}About Ireland VRT & Import Charges Calculator{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h1 class="display-5">
+                <i class="fas fa-info-circle text-primary"></i>
+                About Ireland VRT & Import Charges Calculator
+            </h1>
+            <p class="lead text-muted">
+                Understanding Vehicle Registration Tax and import charges for bringing vehicles to Ireland
+            </p>
+        </div>
+
+        <!-- What is VRT -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-question-circle"></i>
+                    What is VRT?
+                </h5>
+            </div>
+            <div class="card-body">
+                <p>
+                    Vehicle Registration Tax (VRT) is a tax that must be paid when registering a vehicle 
+                    in Ireland for the first time. This includes vehicles imported from other countries, 
+                    including the UK.
+                </p>
+                <p class="mb-0">
+                    VRT is calculated based on the vehicle's Open Market Value (OMV) and CO2 emissions, 
+                    with rates ranging from 14% to 36% depending on environmental impact.
+                </p>
+            </div>
+        </div>
+
+        <!-- How VRT is Calculated -->
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-calculator"></i>
+                    How Import Costs are Calculated
+                </h5>
+            </div>
+            <div class="card-body">
+                <h6>1. Open Market Value (OMV)</h6>
+                <p>The OMV is the price a vehicle would fetch on the open market in Ireland, including:</p>
+                <ul>
+                    <li>Purchase price (converted to EUR)</li>
+                    <li>Transport costs</li>
+                    <li>Insurance during transport</li>
+                    <li>Any other costs to bring the vehicle to Ireland</li>
+                </ul>
+
+                <h6>2. Customs Duty</h6>
+                <p>Customs duty depends on the import origin:</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card border-warning">
+                            <div class="card-header bg-warning text-dark">
+                                <strong><i class="fas fa-map-marker-alt"></i> From United Kingdom</strong>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Customs Duty: 10%</strong></p>
+                                <p>Applied to vehicle purchase price (excluding transport costs). This is an EU import duty for vehicles from non-EU countries (UK post-Brexit).</p>
+                                <small class="text-muted">Applies to: England, Scotland, Wales</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-success">
+                            <div class="card-header bg-success text-white">
+                                <strong><i class="fas fa-map-marker-alt"></i> From Northern Ireland</strong>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Customs Duty: 0%</strong></p>
+                                <p>No customs duty applies as Northern Ireland remains part of the EU customs union for goods under the Northern Ireland Protocol.</p>
+                                <small class="text-muted">Significant savings on import costs</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h6>3. Vehicle Registration Tax (VRT)</h6>
+                <p>VRT rates are based on CO2 emissions. The amount payable is <strong>whichever is greater</strong>: the percentage of vehicle value OR the minimum amount.</p>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>CO2 Emissions (g/km)</th>
+                                <th>VRT Rate</th>
+                                <th>Minimum Amount</th>
+                                <th>Environmental Impact</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-success">
+                                <td>0 - 50</td>
+                                <td>7%</td>
+                                <td>€140</td>
+                                <td>Very low emissions</td>
+                            </tr>
+                            <tr class="table-success">
+                                <td>51 - 80</td>
+                                <td>9%</td>
+                                <td>€180</td>
+                                <td>Low emissions</td>
+                            </tr>
+                            <tr class="table-success">
+                                <td>81 - 100</td>
+                                <td>9.75% - 12%</td>
+                                <td>€195 - €240</td>
+                                <td>Moderate emissions</td>
+                            </tr>
+                            <tr class="table-info">
+                                <td>101 - 120</td>
+                                <td>12.75% - 16%</td>
+                                <td>€255 - €320</td>
+                                <td>Moderate emissions</td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td>121 - 140</td>
+                                <td>16.75% - 20%</td>
+                                <td>€335 - €400</td>
+                                <td>Higher emissions</td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td>141 - 155</td>
+                                <td>21.5% - 27.5%</td>
+                                <td>€430 - €550</td>
+                                <td>High emissions</td>
+                            </tr>
+                            <tr class="table-danger">
+                                <td>156 - 170</td>
+                                <td>30%</td>
+                                <td>€600</td>
+                                <td>Very high emissions</td>
+                            </tr>
+                            <tr class="table-danger">
+                                <td>171 - 190</td>
+                                <td>35%</td>
+                                <td>€700</td>
+                                <td>Extremely high emissions</td>
+                            </tr>
+                            <tr class="table-dark">
+                                <td>191+</td>
+                                <td>41%</td>
+                                <td>€820</td>
+                                <td>Maximum rate</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-info"><i class="fas fa-info-circle"></i> <strong>Important:</strong> VRT is calculated as whichever is greater - the percentage of the vehicle's value or the minimum amount shown above. This means:</p>
+                <ul>
+                    <li><strong>Expensive vehicles</strong> typically pay the percentage rate</li>
+                    <li><strong>Lower-value vehicles</strong> may only pay the minimum amount</li>
+                    <li><strong>The system encourages</strong> importing lower-emission vehicles through significantly lower rates</li>
+                </ul>
+                
+                <div class="alert alert-success mt-3">
+                    <h6><i class="fas fa-leaf"></i> Environmental Impact</h6>
+                    <p class="mb-0">The VRT system is designed to encourage environmentally friendly vehicle choices. A vehicle with 50g/km CO2 pays only 7% VRT, while a 200g/km vehicle pays 41% - nearly 6 times more!</p>
+                </div>
+
+                <h6>4. Value Added Tax (VAT) - 21%</h6>
+                <p>VAT is charged at <strong>21%</strong> on the combined value of:</p>
+                <ul>
+                    <li>Vehicle purchase price</li>
+                    <li>Customs duty</li>
+                    <li>VRT amount</li>
+                </ul>
+                <p class="text-info"><i class="fas fa-info-circle"></i> <strong>Note:</strong> VAT is calculated on the cumulative value, making it one of the largest components of the total cost.</p>
+
+                <h6>5. Minimum VRT Amounts by CO2 Band</h6>
+                <p>The VRT system uses detailed CO2 emission bands with specific minimum amounts. You pay <strong>whichever is greater</strong>: the percentage of vehicle value OR the minimum amount.</p>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-success">Low Emission Vehicles (0-100g/km)</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>0-50g/km:</strong> 7% or €140 minimum</li>
+                            <li><strong>51-80g/km:</strong> 9% or €180 minimum</li>
+                            <li><strong>81-85g/km:</strong> 9.75% or €195 minimum</li>
+                            <li><strong>86-90g/km:</strong> 10.5% or €210 minimum</li>
+                            <li><strong>91-95g/km:</strong> 11.25% or €225 minimum</li>
+                            <li><strong>96-100g/km:</strong> 12% or €240 minimum</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-info">Moderate Emission Vehicles (101-140g/km)</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>101-105g/km:</strong> 12.75% or €255 minimum</li>
+                            <li><strong>106-110g/km:</strong> 13.5% or €270 minimum</li>
+                            <li><strong>111-115g/km:</strong> 15.25% or €305 minimum</li>
+                            <li><strong>116-120g/km:</strong> 16% or €320 minimum</li>
+                            <li><strong>121-125g/km:</strong> 16.75% or €335 minimum</li>
+                            <li><strong>126-130g/km:</strong> 17.5% or €350 minimum</li>
+                            <li><strong>131-135g/km:</strong> 19.25% or €385 minimum</li>
+                            <li><strong>136-140g/km:</strong> 20% or €400 minimum</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <h6 class="text-warning">High Emission Vehicles (141-170g/km)</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>141-145g/km:</strong> 21.5% or €430 minimum</li>
+                            <li><strong>146-150g/km:</strong> 25% or €500 minimum</li>
+                            <li><strong>151-155g/km:</strong> 27.5% or €550 minimum</li>
+                            <li><strong>156-170g/km:</strong> 30% or €600 minimum</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-danger">Very High Emission Vehicles (171g/km+)</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>171-190g/km:</strong> 35% or €700 minimum</li>
+                            <li><strong>191g/km+:</strong> 41% or €820 minimum</li>
+                        </ul>
+                        <div class="alert alert-danger mt-2">
+                            <small><i class="fas fa-exclamation-triangle"></i> <strong>Highest rates apply to vehicles with very high emissions</strong></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example Calculations -->
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-calculator"></i>
+                    Example Calculations with Official Rates
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Example 1: Low Emission Vehicle</h6>
+                        <div class="card border-success">
+                            <div class="card-body">
+                                <p><strong>Vehicle:</strong> 2022 Hybrid, 85g/km CO2, £12,000</p>
+                                <ul class="list-unstyled">
+                                    <li>Vehicle Value: €14,040</li>
+                                    <li>Transport: €350</li>
+                                    <li>OMV: €14,390</li>
+                                    <li>Customs Duty (UK): €1,404</li>
+                                    <li>VRT (9.75%): €1,403 vs €195 min = <strong>€1,403</strong></li>
+                                    <li>VAT Base: €16,847</li>
+                                    <li>VAT (21%): €3,538</li>
+                                    <li><strong>Total: €19,487</strong></li>
+                                </ul>
+                                <small class="text-success">Low emissions = lower VRT rate</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Example 2: High Emission Vehicle</h6>
+                        <div class="card border-danger">
+                            <div class="card-body">
+                                <p><strong>Vehicle:</strong> 2020 Petrol SUV, 180g/km CO2, £25,000</p>
+                                <ul class="list-unstyled">
+                                    <li>Vehicle Value: €29,250</li>
+                                    <li>Transport: €350</li>
+                                    <li>OMV: €29,600</li>
+                                    <li>Customs Duty (UK): €2,925</li>
+                                    <li>VRT (35%): €10,360 vs €700 min = <strong>€10,360</strong></li>
+                                    <li>VAT Base: €42,535</li>
+                                    <li>VAT (21%): €8,932</li>
+                                    <li><strong>Total: €51,817</strong></li>
+                                </ul>
+                                <small class="text-danger">High emissions = much higher costs</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info mt-3">
+                    <h6><i class="fas fa-lightbulb"></i> Key Insights from Official Rates:</h6>
+                    <ul class="mb-0">
+                        <li><strong>Low emission vehicles (under 100g/km)</strong> have significantly lower VRT rates (7-12%)</li>
+                        <li><strong>Electric vehicles</strong> may qualify for even lower rates or exemptions</li>
+                        <li><strong>High emission vehicles (over 170g/km)</strong> face very high rates (35-41%)</li>
+                        <li><strong>The "whichever is greater" rule</strong> means expensive low-emission cars still pay percentage rates</li>
+                        <li><strong>Northern Ireland imports</strong> save the 10% customs duty, reducing total costs significantly</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Import Process -->
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-list-ol"></i>
+                    Import Process Steps
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Before Import:</h6>
+                        <ol>
+                            <li>Calculate estimated VRT costs</li>
+                            <li>Arrange transport to Ireland</li>
+                            <li>Get transit insurance</li>
+                            <li>Prepare required documentation</li>
+                        </ol>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>After Arrival:</h6>
+                        <ol>
+                            <li>Declare import to Irish Customs</li>
+                            <li>Pay VRT within 30 days</li>
+                            <li>Register vehicle with NCTS</li>
+                            <li>Get NCT test (if required)</li>
+                            <li>Arrange Irish insurance</li>
+                            <li>Pay motor tax</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Required Documents -->
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">
+                    <i class="fas fa-file-alt"></i>
+                    Required Documents
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>For VRT Declaration:</h6>
+                        <ul>
+                            <li>Vehicle registration document</li>
+                            <li>Purchase invoice/receipt</li>
+                            <li>Insurance certificate</li>
+                            <li>Valid ID (passport/driving licence)</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>For Registration:</h6>
+                        <ul>
+                            <li>VRT certificate</li>
+                            <li>NCT certificate (if applicable)</li>
+                            <li>Irish insurance certificate</li>
+                            <li>Proof of address in Ireland</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Useful Links -->
+        <div class="card mb-4">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-external-link-alt"></i>
+                    Useful Resources
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Official Resources:</h6>
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="https://www.revenue.ie/en/importing-vehicles-duty-free-allowances/importing-a-vehicle/vehicle-registration-tax/index.aspx" 
+                                   target="_blank" class="text-decoration-none">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Irish Revenue - VRT Information
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.citizensinformation.ie/en/travel-and-recreation/motoring/buying-or-selling-a-vehicle/importing-a-vehicle-into-ireland/" 
+                                   target="_blank" class="text-decoration-none">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Citizens Information - Importing a Vehicle
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.ncts.ie/" 
+                                   target="_blank" class="text-decoration-none">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    NCTS - Vehicle Registration
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Additional Information:</h6>
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="https://www.rsa.ie/services/licensed-motor-dealers/nct" 
+                                   target="_blank" class="text-decoration-none">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    RSA - NCT Information
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.motortax.ie/" 
+                                   target="_blank" class="text-decoration-none">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Motor Tax Online
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="alert alert-danger" role="alert">
+            <h6><i class="fas fa-exclamation-triangle"></i> Important Disclaimer</h6>
+            <p>
+                This calculator is provided for informational purposes only and should not be considered 
+                as official tax advice. VRT rates, regulations, and calculation methods can change without notice.
+            </p>
+            <p class="mb-0">
+                <strong>Always verify current rates and requirements with Irish Revenue before importing a vehicle.</strong>
+                The creators of this calculator accept no responsibility for any financial losses or 
+                legal issues arising from the use of this tool.
+            </p>
+        </div>
+
+        <!-- Back to Calculator -->
+        <div class="text-center">
+            <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-calculator"></i>
+                Back to Ireland VRT Calculator
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

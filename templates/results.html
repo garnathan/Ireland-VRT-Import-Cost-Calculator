@@ -1,0 +1,400 @@
+{% extends "base.html" %}
+
+{% block title %}Ireland VRT & Import Charges - Calculation Results{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h1 class="display-5">
+                <i class="fas fa-receipt text-success"></i>
+                Ireland VRT & Import Charges - Results
+            </h1>
+            <p class="text-muted">Comprehensive import cost breakdown</p>
+        </div>
+
+        <!-- Total Cost Summary -->
+        <div class="card border-success mb-4">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-euro-sign"></i>
+                    Total Import Cost: €{{ "{:,.2f}".format(result.total_import_cost) }}
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-2">
+                        <h6 class="text-muted">Vehicle Value</h6>
+                        <h5>€{{ "{:,.2f}".format(result.purchase_details.vehicle_value_eur) }}</h5>
+                    </div>
+                    <div class="col-md-2">
+                        <h6 class="text-muted">Transport</h6>
+                        <h5>€{{ "{:,.2f}".format(result.transport_costs.total) }}</h5>
+                    </div>
+                    <div class="col-md-2">
+                        <h6 class="text-muted">Customs Duty</h6>
+                        <h5>€{{ "{:,.2f}".format(result.customs_duty) }}</h5>
+                    </div>
+                    <div class="col-md-2">
+                        <h6 class="text-muted">VRT</h6>
+                        <h5>€{{ "{:,.2f}".format(result.vrt_calculation.final_vrt) }}</h5>
+                    </div>
+                    <div class="col-md-2">
+                        <h6 class="text-muted">VAT (21%)</h6>
+                        <h5>€{{ "{:,.2f}".format(result.vat_calculation.vat_amount) }}</h5>
+                    </div>
+                    <div class="col-md-2">
+                        <h6 class="text-muted">Registration</h6>
+                        <h5>€{{ "{:,.2f}".format(result.additional_costs.registration_fee) }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Purchase Details -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h6 class="mb-0">
+                            <i class="fas fa-shopping-cart"></i>
+                            Purchase Details
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            <tr>
+                                <td><strong>Purchase Price:</strong></td>
+                                <td>£{{ "{:,.2f}".format(result.purchase_details.uk_price_gbp) }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Import From:</strong></td>
+                                <td>
+                                    {% if result.purchase_details.import_origin == 'UK' %}
+                                        <span class="badge bg-warning">United Kingdom</span>
+                                    {% else %}
+                                        <span class="badge bg-success">Northern Ireland</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Exchange Rate:</strong></td>
+                                <td>{{ result.purchase_details.exchange_rate }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Vehicle Value (EUR):</strong></td>
+                                <td><strong>€{{ "{:,.2f}".format(result.purchase_details.vehicle_value_eur) }}</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transport Costs -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-info text-white">
+                        <h6 class="mb-0">
+                            <i class="fas fa-truck"></i>
+                            Transport & Import Costs
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            <tr>
+                                <td>Transport:</td>
+                                <td>€{{ "{:,.2f}".format(result.transport_costs.transport) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Transit Insurance:</td>
+                                <td>€{{ "{:,.2f}".format(result.transport_costs.insurance) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Customs Clearance:</td>
+                                <td>€{{ "{:,.2f}".format(result.transport_costs.customs_clearance) }}</td>
+                            </tr>
+                            <tr class="table-active">
+                                <td><strong>Total Transport:</strong></td>
+                                <td><strong>€{{ "{:,.2f}".format(result.transport_costs.total) }}</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- VRT Calculation -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-warning text-dark">
+                        <h6 class="mb-0">
+                            <i class="fas fa-calculator"></i>
+                            VRT Calculation
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            <tr>
+                                <td><strong>Open Market Value:</strong></td>
+                                <td>€{{ "{:,.2f}".format(result.omv) }}</td>
+                            </tr>
+                            <tr>
+                                <td>CO2 Emissions:</td>
+                                <td>{{ result.vrt_calculation.co2_emissions }}g/km</td>
+                            </tr>
+                            <tr>
+                                <td>VRT Rate:</td>
+                                <td>{{ result.vrt_calculation.co2_rate_percent }}%</td>
+                            </tr>
+                            <tr>
+                                <td>Base VRT:</td>
+                                <td>€{{ "{:,.2f}".format(result.vrt_calculation.base_vrt) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Minimum VRT:</td>
+                                <td>€{{ "{:,.2f}".format(result.vrt_calculation.minimum_vrt) }}</td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td><strong>Final VRT:</strong></td>
+                                <td><strong>€{{ "{:,.2f}".format(result.vrt_calculation.final_vrt) }}</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customs Duty -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header {% if result.customs_duty_applicable %}bg-danger text-white{% else %}bg-success text-white{% endif %}">
+                        <h6 class="mb-0">
+                            <i class="fas fa-shield-alt"></i>
+                            Customs Duty
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            <tr>
+                                <td>Vehicle Value:</td>
+                                <td>€{{ "{:,.2f}".format(result.purchase_details.vehicle_value_eur) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Import Origin:</td>
+                                <td>{{ result.purchase_details.import_origin }}</td>
+                            </tr>
+                            <tr>
+                                <td>Customs Duty Rate:</td>
+                                <td>{% if result.customs_duty_applicable %}10%{% else %}0% (EU){% endif %}</td>
+                            </tr>
+                            <tr class="{% if result.customs_duty_applicable %}table-danger{% else %}table-success{% endif %}">
+                                <td><strong>Customs Duty:</strong></td>
+                                <td><strong>€{{ "{:,.2f}".format(result.customs_duty) }}</strong></td>
+                            </tr>
+                        </table>
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle"></i>
+                            {% if result.customs_duty_applicable %}
+                                Applied to vehicle purchase price
+                            {% else %}
+                                No duty - Northern Ireland in EU customs union
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VAT Calculation -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h6 class="mb-0">
+                            <i class="fas fa-percentage"></i>
+                            VAT Calculation
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            <tr>
+                                <td>VAT Base:</td>
+                                <td>€{{ "{:,.2f}".format(result.vat_calculation.vat_base) }}</td>
+                            </tr>
+                            <tr>
+                                <td>VAT Rate:</td>
+                                <td>{{ result.vat_calculation.vat_rate_percent }}%</td>
+                            </tr>
+                            <tr class="table-primary">
+                                <td><strong>VAT Amount:</strong></td>
+                                <td><strong>€{{ "{:,.2f}".format(result.vat_calculation.vat_amount) }}</strong></td>
+                            </tr>
+                        </table>
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle"></i>
+                            Applied to vehicle + customs duty + VRT
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Additional Costs -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-secondary text-white">
+                        <h6 class="mb-0">
+                            <i class="fas fa-file-invoice"></i>
+                            Additional Costs & Fees
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            <tr>
+                                <td>Registration Fee:</td>
+                                <td>€{{ "{:,.2f}".format(result.additional_costs.registration_fee) }}</td>
+                            </tr>
+                            {% if result.additional_costs.nct_test > 0 %}
+                            <tr>
+                                <td>NCT Test:</td>
+                                <td>€{{ "{:,.2f}".format(result.additional_costs.nct_test) }}</td>
+                            </tr>
+                            {% endif %}
+                            <tr class="table-info">
+                                <td><strong>Annual Motor Tax:</strong></td>
+                                <td><strong>€{{ "{:,.2f}".format(result.additional_costs.motor_tax_annual) }}</strong></td>
+                            </tr>
+                        </table>
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle"></i>
+                            Motor tax is an annual ongoing cost
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cost Breakdown Summary -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-success text-white">
+                        <h6 class="mb-0">
+                            <i class="fas fa-chart-pie"></i>
+                            Total Cost Breakdown
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            <tr>
+                                <td>Vehicle + Transport:</td>
+                                <td>€{{ "{:,.2f}".format(result.purchase_details.vehicle_value_eur + result.transport_costs.total) }}</td>
+                            </tr>
+                            {% if result.customs_duty_applicable %}
+                            <tr>
+                                <td>Customs Duty (10%):</td>
+                                <td>€{{ "{:,.2f}".format(result.customs_duty) }}</td>
+                            </tr>
+                            {% else %}
+                            <tr class="text-success">
+                                <td>Customs Duty (N. Ireland):</td>
+                                <td>€0.00 <small>(No duty)</small></td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <td>VRT ({{ result.vrt_calculation.co2_rate_percent }}%):</td>
+                                <td>€{{ "{:,.2f}".format(result.vrt_calculation.final_vrt) }}</td>
+                            </tr>
+                            <tr>
+                                <td>VAT (21%):</td>
+                                <td>€{{ "{:,.2f}".format(result.vat_calculation.vat_amount) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Registration Fee:</td>
+                                <td>€{{ "{:,.2f}".format(result.additional_costs.registration_fee) }}</td>
+                            </tr>
+                            <tr class="table-success">
+                                <td><strong>Total Import Cost:</strong></td>
+                                <td><strong>€{{ "{:,.2f}".format(result.total_import_cost) }}</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Important Notes -->
+        <div class="card border-warning mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h6 class="mb-0">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Important Notes & Next Steps
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Additional Costs Not Included:</h6>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-shield-alt text-primary"></i> Irish car insurance</li>
+                            <li><i class="fas fa-tools text-primary"></i> Vehicle modifications (if required)</li>
+                            <li><i class="fas fa-gas-pump text-primary"></i> Fuel for journey</li>
+                            <li><i class="fas fa-bed text-primary"></i> Accommodation (if driving)</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Required Actions:</h6>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-file-alt text-success"></i> Declare import to Irish Customs</li>
+                            <li><i class="fas fa-euro-sign text-success"></i> Pay VRT within timeframe</li>
+                            <li><i class="fas fa-id-card text-success"></i> Register with NCTS</li>
+                            <li><i class="fas fa-check-circle text-success"></i> Get NCT test (if required)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="text-center mb-4">
+            <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg me-3">
+                <i class="fas fa-calculator"></i>
+                Calculate Another Import
+            </a>
+            <button onclick="window.print()" class="btn btn-outline-secondary btn-lg">
+                <i class="fas fa-print"></i>
+                Print Results
+            </button>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="alert alert-danger" role="alert">
+            <h6><i class="fas fa-exclamation-triangle"></i> Important Disclaimer</h6>
+            <p class="mb-0">
+                This calculation is an estimate only. VRT rates, exchange rates, and regulations change frequently. 
+                Always verify current rates and requirements with 
+                <a href="https://www.revenue.ie" target="_blank" class="alert-link">Irish Revenue</a> 
+                before importing a vehicle.
+            </p>
+        </div>
+
+        <!-- Calculation Metadata -->
+        <div class="text-center text-muted">
+            <small>
+                Calculation performed on: {{ result.calculation_date[:19] | replace('T', ' ') }} UTC
+            </small>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Print-friendly styling
+window.addEventListener('beforeprint', function() {
+    document.body.classList.add('printing');
+});
+
+window.addEventListener('afterprint', function() {
+    document.body.classList.remove('printing');
+});
+</script>
+{% endblock %}

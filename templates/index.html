@@ -1,0 +1,307 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h1 class="display-4">
+                <i class="fas fa-car text-primary"></i>
+                Ireland VRT & Import Charges Calculator
+            </h1>
+            <p class="lead text-muted">
+                Calculate Vehicle Registration Tax and all import charges for bringing cars to Ireland
+            </p>
+        </div>
+
+        <!-- Warning Alert -->
+        <div class="alert alert-warning" role="alert">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>Important:</strong> This calculator provides estimates only. 
+            Always verify current VRT rates and regulations with Irish Revenue before importing.
+        </div>
+
+        <!-- Calculator Form -->
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-calculator"></i>
+                    Vehicle Import Calculator
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('calculate') }}" id="vrtForm">
+                    <div class="row">
+                        <!-- UK Purchase Price -->
+                        <div class="col-md-6 mb-3">
+                            <label for="uk_price" class="form-label">
+                                <i class="fas fa-pound-sign"></i>
+                                Purchase Price (GBP) *
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">£</span>
+                                <input type="number" 
+                                       class="form-control" 
+                                       id="uk_price" 
+                                       name="uk_price" 
+                                       step="0.01" 
+                                       min="1" 
+                                       required
+                                       placeholder="15000">
+                            </div>
+                            <div class="form-text">Enter the price you paid for the vehicle</div>
+                        </div>
+
+                        <!-- Import Origin -->
+                        <div class="col-md-6 mb-3">
+                            <label for="import_origin" class="form-label">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Import From *
+                            </label>
+                            <select class="form-select" id="import_origin" name="import_origin" required>
+                                <option value="uk">United Kingdom (England, Scotland, Wales)</option>
+                                <option value="ni">Northern Ireland</option>
+                            </select>
+                            <div class="form-text">
+                                <span id="customs-duty-info" class="text-warning">
+                                    <i class="fas fa-info-circle"></i>
+                                    UK imports: 10% customs duty applies
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- CO2 Emissions -->
+                        <div class="col-md-6 mb-3">
+                            <label for="co2_emissions" class="form-label">
+                                <i class="fas fa-smog"></i>
+                                CO2 Emissions (g/km) *
+                            </label>
+                            <input type="number" 
+                                   class="form-control" 
+                                   id="co2_emissions" 
+                                   name="co2_emissions" 
+                                   min="1" 
+                                   max="500" 
+                                   required
+                                   placeholder="150">
+                            <div class="form-text">Found on vehicle registration document or manufacturer specs</div>
+                        </div>
+
+                    <div class="row">
+                        <!-- Fuel Type -->
+                        <div class="col-md-6 mb-3">
+                            <label for="fuel_type" class="form-label">
+                                <i class="fas fa-gas-pump"></i>
+                                Fuel Type *
+                            </label>
+                            <select class="form-select" id="fuel_type" name="fuel_type" required>
+                                <option value="petrol">Petrol</option>
+                                <option value="diesel">Diesel</option>
+                                <option value="hybrid">Hybrid</option>
+                                <option value="electric">Electric</option>
+                            </select>
+                        </div>
+
+                        <!-- Vehicle Age -->
+                        <div class="col-md-6 mb-3">
+                            <label for="vehicle_age" class="form-label">
+                                <i class="fas fa-calendar-alt"></i>
+                                Vehicle Age (Years)
+                            </label>
+                            <input type="number" 
+                                   class="form-control" 
+                                   id="vehicle_age" 
+                                   name="vehicle_age" 
+                                   min="0" 
+                                   max="50" 
+                                   value="0"
+                                   placeholder="0">
+                            <div class="form-text">Age affects VRT calculation (0 for new vehicles)</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Transport Method -->
+                        <div class="col-md-6 mb-3">
+                            <label for="transport_method" class="form-label">
+                                <i class="fas fa-ship"></i>
+                                Transport Method
+                            </label>
+                            <select class="form-select" id="transport_method" name="transport_method">
+                                <option value="ferry">Ferry</option>
+                                <option value="drive">Drive</option>
+                            </select>
+                            <div class="form-text">How will you transport the vehicle to Ireland?</div>
+                        </div>
+
+                        <!-- Current Exchange Rate Display -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-exchange-alt"></i>
+                                Current Exchange Rate
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">1 GBP =</span>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="exchange_rate_display" 
+                                       readonly 
+                                       placeholder="Loading...">
+                                <span class="input-group-text">EUR</span>
+                            </div>
+                            <div class="form-text">Live exchange rate (updates automatically)</div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-calculator"></i>
+                            Calculate VRT & All Import Charges
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- VRT Bands Information -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-info-circle"></i>
+                    Current VRT Rates by CO2 Emissions (Official Irish Revenue Rates)
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>CO2 Emissions (g/km)</th>
+                                <th>VRT Rate</th>
+                                <th>Minimum Amount</th>
+                                <th>Example Annual Motor Tax</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-success">
+                                <td>0 - 50</td>
+                                <td>7%</td>
+                                <td>€140</td>
+                                <td>€120</td>
+                            </tr>
+                            <tr class="table-success">
+                                <td>51 - 80</td>
+                                <td>9%</td>
+                                <td>€180</td>
+                                <td>€120-€170</td>
+                            </tr>
+                            <tr class="table-success">
+                                <td>81 - 100</td>
+                                <td>9.75% - 12%</td>
+                                <td>€195 - €240</td>
+                                <td>€170</td>
+                            </tr>
+                            <tr class="table-info">
+                                <td>101 - 120</td>
+                                <td>12.75% - 16%</td>
+                                <td>€255 - €320</td>
+                                <td>€190-€200</td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td>121 - 140</td>
+                                <td>16.75% - 20%</td>
+                                <td>€335 - €400</td>
+                                <td>€270-€330</td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td>141 - 155</td>
+                                <td>21.5% - 27.5%</td>
+                                <td>€430 - €550</td>
+                                <td>€481</td>
+                            </tr>
+                            <tr class="table-danger">
+                                <td>156 - 170</td>
+                                <td>30%</td>
+                                <td>€600</td>
+                                <td>€677</td>
+                            </tr>
+                            <tr class="table-danger">
+                                <td>171 - 190</td>
+                                <td>35%</td>
+                                <td>€700</td>
+                                <td>€920</td>
+                            </tr>
+                            <tr class="table-dark">
+                                <td>191+</td>
+                                <td>41%</td>
+                                <td>€820</td>
+                                <td>€1,200</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <small class="text-muted">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Official rates from Irish Revenue. VRT is calculated as the higher of the percentage or minimum amount.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Load current exchange rate on page load
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/exchange-rate')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('exchange_rate_display').value = data.gbp_to_eur.toFixed(4);
+        })
+        .catch(error => {
+            console.error('Error fetching exchange rate:', error);
+            document.getElementById('exchange_rate_display').value = '1.1700 (fallback)';
+        });
+    
+    // Handle import origin changes
+    const importOriginSelect = document.getElementById('import_origin');
+    const customsDutyInfo = document.getElementById('customs-duty-info');
+    
+    importOriginSelect.addEventListener('change', function() {
+        updateCustomsDutyInfo(this.value);
+    });
+    
+    function updateCustomsDutyInfo(origin) {
+        if (origin === 'uk') {
+            customsDutyInfo.innerHTML = '<i class="fas fa-info-circle"></i> UK imports: 10% customs duty applies';
+            customsDutyInfo.className = 'text-warning';
+        } else {
+            customsDutyInfo.innerHTML = '<i class="fas fa-check-circle"></i> Northern Ireland: No customs duty (EU customs union)';
+            customsDutyInfo.className = 'text-success';
+        }
+    }
+});
+
+// Form validation
+document.getElementById('vrtForm').addEventListener('submit', function(e) {
+    const ukPrice = parseFloat(document.getElementById('uk_price').value);
+    const co2Emissions = parseInt(document.getElementById('co2_emissions').value);
+    
+    if (ukPrice <= 0) {
+        e.preventDefault();
+        alert('Please enter a valid purchase price greater than 0');
+        return;
+    }
+    
+    if (co2Emissions <= 0 || co2Emissions > 500) {
+        e.preventDefault();
+        alert('Please enter valid CO2 emissions between 1 and 500 g/km');
+        return;
+    }
+});
+</script>
+{% endblock %}
