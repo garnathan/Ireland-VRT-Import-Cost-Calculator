@@ -4,6 +4,26 @@ This project provides multiple ways to calculate Vehicle Registration Tax (VRT) 
 - Command-line Python scripts
 - **Flask web application with modern UI**
 
+## Screenshots
+
+### Main Calculator Interface
+![VRT Calculator Main Interface](static/images/screenshots/main-interface.png)
+*Modern, responsive web interface with real-time exchange rates and comprehensive form validation*
+
+### Calculation Results
+![VRT Calculation Results](static/images/screenshots/results-page.png)
+*Detailed breakdown of all import costs including VRT, customs duty, VAT, and additional fees*
+
+### Mobile-Responsive Design
+![Mobile Interface](static/images/screenshots/mobile-view.png)
+*Fully responsive design that works seamlessly on mobile devices*
+
+### About Page with Legal Information
+![About Page](static/images/screenshots/about-page.png)
+*Comprehensive legal information and import requirements*
+
+> 📸 **Screenshots Updated:** All screenshots are current as of August 2025 and reflect the latest UI design and VRT rates.
+
 ## ⚠️ Important Disclaimer
 
 **This calculator provides estimates only!** Always verify current rates and regulations with:
@@ -27,10 +47,28 @@ VRT rates, CO2 bands, and minimum amounts change regularly.
 - `requirements.txt` - Python dependencies
 - `DEPLOYMENT.md` - Production deployment guide
 
+## Quick Start
+
+### 1. Install Dependencies
+```bash
+pip3 install -r requirements.txt
+```
+
+### 2. Run the Application
+```bash
+python3 app.py
+```
+
+### 3. Open Your Browser
+Navigate to `http://localhost:5000`
+
+![Quick Start Demo](static/images/screenshots/quick-start.gif)
+*Getting started with the VRT Calculator in under 30 seconds*
+
 ## Installation
 
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## Usage
@@ -47,14 +85,16 @@ python3 run.py
 ```
 
 **Features:**
-- Modern, responsive web interface
-- **Import origin selection** (UK vs Northern Ireland)
-- Real-time exchange rate fetching
-- Interactive form validation
-- Detailed cost breakdown with conditional customs duty
-- Print-friendly results
-- Mobile-friendly design
-- API endpoints for integration
+- 🎨 Modern, responsive web interface with Bootstrap styling
+- 🇬🇧🇮🇪 **Import origin selection** (UK vs Northern Ireland)
+- 💱 Real-time exchange rate fetching
+- ✅ Interactive form validation with instant feedback
+- 📊 Detailed cost breakdown with conditional customs duty
+- 🖨️ Print-friendly results page
+- 📱 Mobile-friendly responsive design
+- 🔌 API endpoints for integration
+- 🚗 Support for all fuel types (Petrol, Diesel, Electric, Hybrid)
+- 📈 Updated 2024 VRT rates with 20 detailed CO2 bands
 
 ### Command Line Tools
 
@@ -198,6 +238,36 @@ See `DEPLOYMENT.md` for comprehensive deployment instructions including:
 - [Irish Revenue VRT Information](https://www.revenue.ie/en/importing-vehicles-duty-free-allowances/importing-a-vehicle/vehicle-registration-tax/index.aspx)
 - [Citizens Information - Importing a Car](https://www.citizensinformation.ie/en/travel-and-recreation/motoring/buying-or-selling-a-vehicle/importing-a-vehicle-into-ireland/)
 - [NCTS Vehicle Registration](https://www.ncts.ie/)
+
+## Generating Screenshots
+
+To update the screenshots in this README:
+
+1. **Install screenshot dependencies:**
+   ```bash
+   pip3 install -r screenshot_requirements.txt
+   ```
+
+2. **Install Chrome and ChromeDriver:**
+   ```bash
+   # macOS
+   brew install chromedriver
+   
+   # Ubuntu/Debian
+   sudo apt-get install chromium-chromedriver
+   ```
+
+3. **Run the Flask app:**
+   ```bash
+   python3 app.py
+   ```
+
+4. **Generate screenshots:**
+   ```bash
+   python3 take_screenshots.py
+   ```
+
+Screenshots will be saved to `static/images/screenshots/` and automatically referenced in this README.
 
 ## Contributing
 
