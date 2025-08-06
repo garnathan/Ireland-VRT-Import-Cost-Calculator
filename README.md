@@ -25,6 +25,7 @@ VRT rates, CO2 bands, and minimum amounts change regularly.
 - `templates/` - HTML templates
 - `static/` - CSS and JavaScript files
 - `requirements.txt` - Python dependencies
+- `DEPLOYMENT.md` - Production deployment guide
 
 ## Installation
 
@@ -70,8 +71,8 @@ python3 vrt_calculator_enhanced.py
 ## What the Calculator Includes
 
 ### VRT Calculation
-- CO2-based VRT rates (14% to 36%)
-- Minimum VRT amounts by fuel type
+- CO2-based VRT rates (7% to 41%)
+- Minimum VRT amounts by CO2 emissions
 - Age-related depreciation
 - Open Market Value (OMV) calculation
 
@@ -82,26 +83,42 @@ python3 vrt_calculator_enhanced.py
 - Motor tax estimates
 - Registration fees
 
-### Current VRT Rates (Verify These!)
-- 0-120g/km CO2: 14%
-- 121-140g/km CO2: 16%
-- 141-155g/km CO2: 20%
-- 156-170g/km CO2: 24%
-- 171-190g/km CO2: 28%
-- 191-225g/km CO2: 32%
-- 226g/km+ CO2: 36%
+### Current VRT Rates (2024 - Category A)
 
-### Minimum VRT Amounts
-- Petrol: €125
-- Diesel: €200
-- Electric: €0
-- Hybrid: €125
+| CO2 Emissions (g/km) | VRT Rate | Minimum Amount |
+|---------------------|----------|----------------|
+| 0-50 | 7% | €140 |
+| 51-80 | 9% | €180 |
+| 81-85 | 9.75% | €195 |
+| 86-90 | 10.5% | €210 |
+| 91-95 | 11.25% | €225 |
+| 96-100 | 12% | €240 |
+| 101-105 | 12.75% | €255 |
+| 106-110 | 13.5% | €270 |
+| 111-115 | 15.25% | €305 |
+| 116-120 | 16% | €320 |
+| 121-125 | 16.75% | €335 |
+| 126-130 | 17.5% | €350 |
+| 131-135 | 19.25% | €385 |
+| 136-140 | 20% | €400 |
+| 141-145 | 21.5% | €430 |
+| 146-150 | 25% | €500 |
+| 151-155 | 27.5% | €550 |
+| 156-170 | 30% | €600 |
+| 171-190 | 35% | €700 |
+| 191+ | 41% | €820 |
+
+### Fuel Type Support
+- Petrol
+- Diesel
+- Electric
+- Hybrid
 
 ## Features to Add
 
-1. **Real-time exchange rates** - Integrate with currency API
+1. **Real-time exchange rates** - ✅ Integrated with currency API
 2. **Vehicle lookup** - Connect to DVLA or similar API
-3. **Updated rates** - Automatically fetch current VRT rates
+3. **Updated rates** - ✅ Current 2024 rates implemented
 4. **Motor tax calculator** - More accurate annual tax calculation
 5. **Insurance estimates** - Integration with Irish insurance providers
 
@@ -112,47 +129,47 @@ For a 2020 petrol car with 150g/km CO2, purchased for £15,000:
 ### From United Kingdom:
 ```
 UK Price: £15,000
-Exchange Rate: 1.17
+Exchange Rate: 1.17 (example)
 Vehicle Value: €17,550
 Transport Costs: €350
 OMV: €17,900
 
 Customs Duty (10%): €1,755
-VRT Rate: 20% (150g/km CO2)
-VRT Amount: €3,580
-VAT Base: €17,550 + €1,755 + €3,580 = €22,885
-VAT (21%): €4,806
+VRT Rate: 25% (150g/km CO2)
+VRT Amount: €4,475
+VAT Base: €17,550 + €1,755 + €4,475 = €23,780
+VAT (23%): €5,469
 Registration Fee: €102
 
-Total Import Cost: €28,143
+Total Import Cost: €29,701
 ```
 
 ### From Northern Ireland:
 ```
 UK Price: £15,000
-Exchange Rate: 1.17
+Exchange Rate: 1.17 (example)
 Vehicle Value: €17,550
 Transport Costs: €350
 OMV: €17,900
 
 Customs Duty: €0 (No duty - EU customs union)
-VRT Rate: 20% (150g/km CO2)
-VRT Amount: €3,580
-VAT Base: €17,550 + €0 + €3,580 = €21,130
-VAT (21%): €4,437
+VRT Rate: 25% (150g/km CO2)
+VRT Amount: €4,475
+VAT Base: €17,550 + €0 + €4,475 = €22,025
+VAT (23%): €5,066
 Registration Fee: €102
 
-Total Import Cost: €26,369
+Total Import Cost: €27,193
 ```
 
-**Savings from Northern Ireland: €1,774** (6.3% less)
+**Savings from Northern Ireland: €2,508** (8.4% less)
 
 **Cost Breakdown (UK Import):**
-- Vehicle + Transport: €17,900 (63.6%)
-- Customs Duty: €1,755 (6.2%)
-- VRT: €3,580 (12.7%)
-- VAT: €4,806 (17.1%)
-- Registration: €102 (0.4%)
+- Vehicle + Transport: €17,900 (60.3%)
+- Customs Duty: €1,755 (5.9%)
+- VRT: €4,475 (15.1%)
+- VAT: €5,469 (18.4%)
+- Registration: €102 (0.3%)
 
 ## Legal Requirements
 
@@ -165,6 +182,17 @@ When importing a car from UK to Ireland, you must:
 5. **Arrange Irish insurance**
 6. **Pay motor tax**
 
+## Production Deployment
+
+See `DEPLOYMENT.md` for comprehensive deployment instructions including:
+- Local development setup
+- Production deployment with Gunicorn
+- Docker containerization
+- Cloud deployment options (Heroku, AWS, DigitalOcean)
+- Nginx configuration
+- SSL/HTTPS setup
+- Monitoring and logging
+
 ## Useful Resources
 
 - [Irish Revenue VRT Information](https://www.revenue.ie/en/importing-vehicles-duty-free-allowances/importing-a-vehicle/vehicle-registration-tax/index.aspx)
@@ -173,12 +201,24 @@ When importing a car from UK to Ireland, you must:
 
 ## Contributing
 
-This is a basic framework. Contributions welcome for:
-- API integrations
+This is a comprehensive framework with modern web interface. Contributions welcome for:
+- API integrations (DVLA vehicle lookup)
 - Updated rate tables
 - Better cost estimates
 - UI improvements
+- Mobile app version
 
 ## License
 
 This script is provided as-is for educational purposes. No warranty provided.
+
+## Changelog
+
+### 2024 Updates
+- ✅ Updated to 2024 VRT rates with 20 detailed CO2 bands
+- ✅ Modern Flask web application with Bootstrap UI
+- ✅ Real-time exchange rate integration
+- ✅ Comprehensive deployment documentation
+- ✅ Production-ready configuration
+- ✅ Mobile-responsive design
+- ✅ API endpoints for integration
